@@ -356,7 +356,7 @@ const CluedoGame = () => {
   const movePlayer = (roomId) => {
     socketRef.current.emit('movePlayer', {
       roomId: currentRoomId,
-      roomId: roomId // destinationRoomId
+      destinationRoomId: roomId // Modificato qui: ora usiamo destinationRoomId
     });
   };
 

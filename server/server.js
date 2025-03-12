@@ -186,8 +186,8 @@ io.on('connection', (socket) => {
     }
   });
   
-  // Muovi il personaggio
-  socket.on('movePlayer', ({ roomId, roomId: destinationRoomId }) => {
+// Muovi il personaggio
+socket.on('movePlayer', ({ roomId, destinationRoomId }) => {
     const room = gameRooms[roomId];
     
     if (!room || !room.players[socket.id]) {
