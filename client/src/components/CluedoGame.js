@@ -58,7 +58,7 @@ const CluedoGame = () => {
     const ENDPOINT = window.location.hostname === 'localhost' 
   ? 'http://localhost:3001' 
   : 'https://cluedo-server.onrender.com';
-  
+
     socketRef.current = io(ENDPOINT);
 
     // Gestisce la connessione stabilita
@@ -274,15 +274,19 @@ const CluedoGame = () => {
 
   // Funzioni per interagire con il server
   const fetchGameRooms = () => {
-    fetch('http://localhost:3001/api/game-rooms')
-      .then(response => response.json())
-      .then(data => {
-        setGameRooms(data);
-      })
-      .catch(error => {
-        console.error('Errore nel recupero delle stanze:', error);
-      });
-  };
+  const apiUrl = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3001/api/game-rooms' 
+    : 'https://gamecluedo.onrender.com/api/game-rooms';
+    
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      setGameRooms(data);
+    })
+    .catch(error => {
+      console.error('Errore nel recupero delle stanze:', error);
+    });
+};
 
   const joinRoom = (roomId) => {
     if (!playerName || !selectedCharacter) {
@@ -302,6 +306,23 @@ const CluedoGame = () => {
       displayNotification("Inserisci il tuo nome e il nome della stanza");
       return;
     }
+  
+    const apiUrl = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3001/api/create-room' 
+      : 'https://gamecluedo.onrender.com/api/create-room';
+  
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        roomName: ui.roomName,
+        maxPlayers: ui.maxPlayers,
+        creatorName: playerName
+      })
+    })
+    // resto del codice...
 
     fetch('http://localhost:3001/api/create-room', {
       method: 'POST',
